@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "319920728304",
+    "project_id": "traveloptions-6714e",
+    "storage_bucket": "traveloptions-6714e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319920728304:android:bab4e452d68c343ee67a35",
+        "android_client_info": {
+          "package_name": "com.example.traveloptions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319920728304-hjnd25jp0vsnmajp5s84gs6tge4tv867.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxDLM_AuMgZfOuGkxrAIUmq_J97idoVqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319920728304-hjnd25jp0vsnmajp5s84gs6tge4tv867.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
