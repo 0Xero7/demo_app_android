@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveloptions.databinding.FragmentFirstBinding
 import data.locationpreference.LocationPreferenceRepository
 import data.locationpreference.LocationPreferenceViewModel
+import data.locationpreference.LocationPreferenceViewModelFactory
 import decorations.PreferenceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +23,7 @@ class LocationPreferenceFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
     private lateinit var locPreferrenceAdapter: TravelPreferrenceAdapter
-    private val mLocationPreferenceViewModel : LocationPreferenceViewModel by activityViewModels()
+    private lateinit var mLocationPreferenceViewModel : LocationPreferenceViewModel
 
     @Volatile
     private var isLoading : Boolean = false
@@ -38,8 +40,8 @@ class LocationPreferenceFragment : Fragment() {
 
         locPreferrenceAdapter = TravelPreferrenceAdapter()
 
-        if (mLocationPreferenceViewModel.preferredLocations.value.isNullOrEmpty())
-            mLocationPreferenceViewModel.create(LocationPreferenceRepository())
+        val factory = LocationPreferenceViewModelFactory(LocationPreferenceRepository(), requireActivity().application)
+        mLocationPreferenceViewModel = ViewModelProvider(this, factory).get(LocationPreferenceViewModel::class.java)
 
         mLocationPreferenceViewModel.preferredLocations.observe(viewLifecycleOwner) {
             locPreferrenceAdapter.differ.submitList(it.toList())
@@ -63,7 +65,6 @@ class LocationPreferenceFragment : Fragment() {
                 if (!isLoading && visibleItemCount + pastItemCount >= total) {
                     loadMore()
                 }
-
             }
         })
 

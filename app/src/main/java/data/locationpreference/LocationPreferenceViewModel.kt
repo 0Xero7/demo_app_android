@@ -8,17 +8,11 @@ import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class LocationPreferenceViewModel(application: Application) : AndroidViewModel(application) {
-
-    private lateinit var locationPreferenceRepository: LocationPreferenceRepository
+class LocationPreferenceViewModel(private val locationPreferenceRepository: LocationPreferenceRepository, application: Application) : AndroidViewModel(application) {
 
     @Volatile
     private var _isLoading: Boolean = false
     val isLoading = _isLoading
-
-    fun create(repository: LocationPreferenceRepository) {
-        locationPreferenceRepository = repository
-    }
 
     private var _data: MutableList<LocationPreference> = mutableListOf()
     private var data: MutableLiveData<List<LocationPreference>> = MutableLiveData()
