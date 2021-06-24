@@ -1,10 +1,11 @@
-package com.example.traveloptions
+package decorations
 
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
-class PreferenceItemDecoration(private val spacing : Int) : RecyclerView.ItemDecoration() {
+class GridItemDecoration(private val space : Int) : RecyclerView.ItemDecoration() {
+
     override fun getItemOffsets(
         outRect: Rect,
         view: View,
@@ -14,11 +15,14 @@ class PreferenceItemDecoration(private val spacing : Int) : RecyclerView.ItemDec
         super.getItemOffsets(outRect, view, parent, state)
 
         val pos = parent.getChildAdapterPosition(view)
+        val column = pos % 2
+        val row = pos / 2
 
-        outRect.left = spacing
-        outRect.right = spacing
+        outRect.left = if (column == 0) space else (space / 2)
+        outRect.right = if (column == 1) space else (space / 2)
 
-        outRect.top = if (pos == 0) spacing else spacing / 2
-        outRect.bottom = if (pos == parent.childCount - 1) spacing else spacing / 2
+        outRect.bottom = space
+        outRect.top = (if (row == 0) space else 0)
     }
+
 }

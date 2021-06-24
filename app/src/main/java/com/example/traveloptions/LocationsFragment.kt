@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
@@ -18,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.traveloptions.databinding.FragmentSecondBinding
 import data.location.LocationRepository
 import data.location.LocationViewModel
+import data.location.LocationViewModelFactory
+import decorations.GridItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -54,8 +55,8 @@ class LocationsFragment : Fragment() {
             Navigation.findNavController(requireView()).navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
-        mLocationViewModel = ViewModelProvider(this).get(LocationViewModel::class.java)
-        mLocationViewModel.create(LocationRepository(categoryID))
+        val factory = LocationViewModelFactory(LocationRepository(categoryID))
+        mLocationViewModel = ViewModelProvider(this, factory).get(LocationViewModel::class.java)
 
         mRvAdapter = TravelLocationAdapter(categoryName)
 

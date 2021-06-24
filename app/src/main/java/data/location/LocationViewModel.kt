@@ -7,13 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentChange
 import data.locationpreference.LocationPreference
 
-class LocationViewModel() : ViewModel() {
-    private lateinit var repository: LocationRepository
-
-    fun create(repo: LocationRepository) {
-        repository = repo
-    }
-
+class LocationViewModel(private val repository : LocationRepository) : ViewModel() {
     private val _data : MutableList<Location> = mutableListOf()
     private val data : MutableLiveData<List<Location>> = MutableLiveData()
     val locationList : LiveData<List<Location>> = data
