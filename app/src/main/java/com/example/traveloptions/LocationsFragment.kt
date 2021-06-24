@@ -1,6 +1,6 @@
 package com.example.traveloptions
 
-import android.content.res.Resources
+import adapters.TravelLocationAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,9 +9,8 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavArgs
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,12 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.traveloptions.databinding.FragmentSecondBinding
 import data.location.LocationRepository
 import data.location.LocationViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class LocationsFragment : Fragment() {
 
     private var _binding: FragmentSecondBinding? = null
 
@@ -34,7 +34,7 @@ class SecondFragment : Fragment() {
     @Volatile
     private var isLoading : Boolean = false
 
-    val args: SecondFragmentArgs by navArgs()
+    val args: LocationsFragmentArgs by navArgs()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -60,7 +60,7 @@ class SecondFragment : Fragment() {
         mRvAdapter = TravelLocationAdapter(categoryName)
 
         mLocationViewModel.locationList.observe(viewLifecycleOwner)  {
-            mRvAdapter.setData(it)
+            mRvAdapter.differ.submitList(it.toList())
         }
 
         binding.rvLocations.adapter = mRvAdapter
@@ -91,7 +91,7 @@ class SecondFragment : Fragment() {
     }
 
     private fun loadMore() {
-        lifecycleScope.launch {
+        mLocationViewModel.viewModelScope.launch(Dispatchers.IO) {
             isLoading = true
             mLocationViewModel.getLocations()
             isLoading = false

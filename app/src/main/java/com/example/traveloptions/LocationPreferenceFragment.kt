@@ -1,22 +1,21 @@
 package com.example.traveloptions
 
+import adapters.TravelPreferrenceAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.traveloptions.databinding.FragmentFirstBinding
-import data.locationpreference.LocationPreferenceDiffUtils
 import data.locationpreference.LocationPreferenceRepository
 import data.locationpreference.LocationPreferenceViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class LocationPreferenceFragment : Fragment() {
@@ -44,7 +43,7 @@ class LocationPreferenceFragment : Fragment() {
             mLocationPreferenceViewModel.create(LocationPreferenceRepository())
 
         mLocationPreferenceViewModel.preferredLocations.observe(viewLifecycleOwner) {
-            locPreferrenceAdapter.setData(it)
+            locPreferrenceAdapter.differ.submitList(it.toList())
         }
 
         binding.rvLocationPref.adapter = locPreferrenceAdapter
@@ -70,12 +69,11 @@ class LocationPreferenceFragment : Fragment() {
         })
 
         loadMore()
-
         return binding.root
     }
 
     private fun loadMore() {
-        lifecycleScope.launch {
+        mLocationPreferenceViewModel.viewModelScope.launch(Dispatchers.IO) {
             isLoading = true
             mLocationPreferenceViewModel.getLocations()
             isLoading = false

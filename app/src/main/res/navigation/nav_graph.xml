@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.example.traveloptions.SecondFragment"
+        android:name="com.example.traveloptions.LocationsFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 

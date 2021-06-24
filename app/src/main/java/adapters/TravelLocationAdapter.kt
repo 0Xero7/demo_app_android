@@ -1,26 +1,32 @@
-package com.example.traveloptions
+package adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.traveloptions.R
+import com.example.traveloptions.LocationsFragmentDirections
 import data.location.Location
-import data.location.LocationDiffUtils
 
 class TravelLocationAdapter(private val category: String) : RecyclerView.Adapter<TravelLocationAdapter.TravelLoationViewHolder>() {
-    class TravelLoationViewHolder(item : View) : RecyclerView.ViewHolder(item)
+    inner class TravelLoationViewHolder(item : View) : RecyclerView.ViewHolder(item)
 
-    private var locations : List<Location> = emptyList()
+    private val differCallback = object : DiffUtil.ItemCallback<Location>() {
+        override fun areItemsTheSame(oldItem: Location, newItem: Location): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    fun setData(locs: List<Location>) {
-        val diffUtils = LocationDiffUtils(locations, locs)
-        val diffResult = DiffUtil.calculateDiff(diffUtils)
-        locations = locs.toList()
-        diffResult.dispatchUpdatesTo(this)
+        override fun areContentsTheSame(old: Location, new: Location): Boolean {
+            return old.id == new.id && old.categoryId == new.categoryId && old.likes == new.likes
+                    && old.locationName == new.locationName && old.description == new.description
+        }
     }
+
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TravelLoationViewHolder {
         return TravelLoationViewHolder(
@@ -33,18 +39,18 @@ class TravelLocationAdapter(private val category: String) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: TravelLoationViewHolder, position: Int) {
-        val item = locations[position]
+        val item = differ.currentList[position]
 
         holder.itemView.apply {
             findViewById<TextView>(R.id.tvLocationName).text = item.locationName
             findViewById<TextView>(R.id.tvLocationLikes).text = "${item.likes} likes"
 
             setOnClickListener {
-                val action = SecondFragmentDirections.showLocationDetail(item, category)
+                val action = LocationsFragmentDirections.showLocationDetail(item, category)
                 Navigation.findNavController(holder.itemView).navigate(action)
             }
         }
     }
 
-    override fun getItemCount(): Int = locations.size
+    override fun getItemCount(): Int = differ.currentList.size
 }
