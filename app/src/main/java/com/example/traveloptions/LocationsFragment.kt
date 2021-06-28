@@ -52,7 +52,7 @@ class LocationsFragment : Fragment() {
 
         binding.tvCategory.text = "$categoryName"
         binding.btBack.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_SecondFragment_to_FirstFragment)
+            Navigation.findNavController(requireView()).popBackStack()//navigate(R.id.action_SecondFragment_to_FirstFragment)
         }
 
         val factory = LocationViewModelFactory(LocationRepository(categoryID))

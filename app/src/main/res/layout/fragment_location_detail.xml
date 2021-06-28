@@ -38,6 +38,7 @@
             android:paddingHorizontal="15dp">
 
             <ImageView
+                android:id="@+id/ivLocationImage"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_marginTop="85dp"
@@ -52,6 +53,7 @@
                 android:layout_marginTop="-55dp"
                 android:layout_marginStart="10dp"
                 android:hint="Location Name"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_medium"
                 android:textSize="20sp" />
             <TextView
@@ -62,6 +64,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginStart="10dp"
                 android:hint="Beach"
+                android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_regular"
                 android:textSize="14sp" />
 

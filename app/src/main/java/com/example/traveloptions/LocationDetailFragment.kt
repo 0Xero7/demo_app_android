@@ -7,7 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgs
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.traveloptions.databinding.FragmentLocationDetailBinding
 import com.example.traveloptions.databinding.FragmentSecondBinding
 
@@ -29,12 +34,21 @@ class LocationDetailFragment : Fragment() {
         val location = args.location
         val category = args.categoryName
 
+        val crop = RequestOptions().transform(CenterCrop(), RoundedCorners(16))
+
+        Glide.with(requireContext())
+            .load("https://cdn.stocksnap.io/img-thumbs/960w/empty-road_Q1W4K2AN0F.jpg")
+            .apply(crop)
+            .into(binding.ivLocationImage)
+
         binding.tvLocationDetailName.text = location.locationName
         binding.tvLocationDetailCategory.text = category
         binding.tvLocationDetailDescription.text = location.description
 
+
+
         binding.imageButton.setOnClickListener {
-            activity?.onBackPressed()
+            findNavController().popBackStack()
         }
 
         return binding.root
