@@ -35,16 +35,19 @@ class LocationDetailFragment : Fragment() {
         val category = args.categoryName
 
         val crop = RequestOptions().transform(CenterCrop(), RoundedCorners(16))
-
         Glide.with(requireContext())
-            .load("https://cdn.stocksnap.io/img-thumbs/960w/empty-road_Q1W4K2AN0F.jpg")
+            .load(location.url)//"https://cdn.stocksnap.io/img-thumbs/960w/empty-road_Q1W4K2AN0F.jpg")
             .apply(crop)
             .into(binding.ivLocationImage)
+
+        binding.ivLocationImage.setOnClickListener {
+            val action = LocationDetailFragmentDirections.actionLocationDetailFragmentToLocationImageFragment(location)
+            findNavController().navigate(action)
+        }
 
         binding.tvLocationDetailName.text = location.locationName
         binding.tvLocationDetailCategory.text = category
         binding.tvLocationDetailDescription.text = location.description
-
 
 
         binding.imageButton.setOnClickListener {

@@ -46,5 +46,19 @@
         <argument
             android:name="categoryName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_locationDetailFragment_to_locationImageFragment"
+            app:destination="@id/locationImageFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationImageFragment"
+        android:name="com.example.traveloptions.LocationImageFragment"
+        android:label="fragment_location_image"
+        tools:layout="@layout/fragment_location_image" >
+        <argument
+            android:name="location"
+            app:argType="data.location.Location" />
     </fragment>
 </navigation>
